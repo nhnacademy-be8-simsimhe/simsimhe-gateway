@@ -1,4 +1,4 @@
-package com.nhnacademy.fillter;
+package com.nhnacademy.gateway.fillter;
 
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
