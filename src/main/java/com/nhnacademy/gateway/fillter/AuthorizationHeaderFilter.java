@@ -1,8 +1,10 @@
 package com.nhnacademy.gateway.fillter;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -67,6 +69,8 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         byte[] secretKeyBytes = Base64.getEncoder().encode(Objects.requireNonNull(environment.getProperty("jwt.secret")).getBytes());
         SecretKey signingKey = new SecretKeySpec(secretKeyBytes, SignatureAlgorithm.HS512.getJcaName());
 
+        SecretKey key = Keys.hmacShaKeyFor(environment.getProperty("jwt.secret").getBytes());
+
         boolean returnValue = true;
 
         //subject = userId
@@ -74,11 +78,19 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
         //서명검증
         try {
-            JwtParser jwtParser = Jwts.parser()
-                    .setSigningKey(signingKey)
-                    .build();
+            Claims claims = Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(jwt)
+                    .getPayload();
 
-            subject = jwtParser.parseClaimsJws(jwt).getBody().getSubject(); //서명이 유효하면 JWT의 Payload를 파싱하여 sub(Subject) = loginId 추출합니다.
+
+//            JwtParser jwtParser = Jwts.parser()
+//                    .setSigningKey(key)
+//                    .build();
+
+//            subject = jwtParser.parseClaimsJws(jwt).getBody().getSubject(); //서명이 유효하면 JWT의 Payload를 파싱하여 sub(Subject) = loginId 추출합니다.
+            subject = claims.getSubject();
         } catch (Exception ex) {
             returnValue = false;
         }

@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: apigateway-server
+    name: apigateway-service
   cloud:
     gateway:
       routes:
@@ -28,9 +28,22 @@ spring:
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
+        - id: account-server
+          uri: lb://ACCOUNT-SERVER
+          predicates:
+            - Path=/api/users/**
+            - Method=POST,GET
+          filters:
+            - RemoveRequestHeader=Cookie
+        - id: account-server
+          uri: lb://ACCOUNT-SERVER
+          predicates:
+            - Path=/api/hello
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
 
 
 jwt:
   secret: super-strong-secret-key-that-is-256-bits-long!
-
-
