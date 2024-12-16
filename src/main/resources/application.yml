@@ -10,19 +10,19 @@ eureka:
 
 spring:
   application:
-    name: apigateway-service
+    name: apigateway-server
   cloud:
     gateway:
       routes:
-        - id: api-service
-          uri: lb://ACCOUNT-SERVICE
+        - id: account-service
+          uri: lb://ACCOUNT-SERVER
           predicates:
             - Path=/api/users
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
         - id: api-service
-          uri: lb://ACCOUNT-SERVICE
+          uri: lb://ACCOUNT-SERVER
           predicates:
             - Path=/api/login
             - Method=POST
