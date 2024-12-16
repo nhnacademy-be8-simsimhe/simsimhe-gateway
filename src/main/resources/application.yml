@@ -14,14 +14,14 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: account-service
+        - id: account-server
           uri: lb://ACCOUNT-SERVER
           predicates:
             - Path=/api/users
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
-        - id: api-service
+        - id: account-server
           uri: lb://ACCOUNT-SERVER
           predicates:
             - Path=/api/login
