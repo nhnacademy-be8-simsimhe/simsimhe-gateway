@@ -30,6 +30,14 @@
         <java.version>21</java.version>
         <spring-cloud.version>2024.0.0</spring-cloud.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>logncrash</id>
+            <url>file://${project.basedir}/src/main/resources/libs</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -49,11 +57,9 @@
 
         <!-- LOGCRASH -->
         <dependency>
-            <groupId>LogCrash</groupId>
-            <artifactId>toast_log_crash</artifactId>
+            <groupId>logncrash</groupId>
+            <artifactId>toast-log-crash-logback-sdk</artifactId>
             <version>3.0.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/libs/toast-log-crash-logback-sdk-3.0.5.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -103,44 +109,8 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-
-
-            <!-- Maven Assembly Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.7.1</version>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase> <!-- package 단계에서 실행 -->
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                            <archive>
-                                <manifest>
-                                    <mainClass>com.nhnacademy.logtest.LogTestApplication</mainClass>
-                                </manifest>
-                            </archive>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>
     </build>
-
 </project>

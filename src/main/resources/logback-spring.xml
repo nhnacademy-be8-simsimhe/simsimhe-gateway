@@ -14,8 +14,8 @@
 
 
     <!-- LOGNCRASH -->
-    <appender name="LOGNCRASH" class="com.nhnacademy.logtest.log.LogAndCrashAppender">
-        <appKey>nMWnKdBvAFvUW8XL</appKey>
+    <appender name="LOGNCRASH" class="com.nhnacademy.gateway.log.LogAndCrashAppender">
+        <param name="appKey" value="${LOG_N_CRASH_APP_KEY}"/>
         <platform>code-quest.search</platform>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
