@@ -13,3 +13,47 @@ eureka:
 spring:
   application:
     name: apigateway-service
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  cloud:
+    gateway:
+      routes:
+        - id: account-server
+          uri: lb://ACCOUNT-SERVER
+          predicates:
+            - Path=/api/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+        - id: account-server
+          uri: lb://ACCOUNT-SERVER
+          predicates:
+            - Path=/api/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+        - id: account-server
+          uri: lb://ACCOUNT-SERVER
+          predicates:
+            - Path=/api/users/**
+            - Method=POST,GET
+          filters:
+            - RemoveRequestHeader=Cookie
+        - id: account-server
+          uri: lb://ACCOUNT-SERVER
+          predicates:
+            - Path=/api/hello
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
+        - id : api-server
+          uri: lb://API-SERVER
+          predicates:
+            - Path=/shop/hello
+          filters:
+            - RemoveRequestHeader=Cookie
+
+
+jwt:
+  secret: super-strong-secret-key-that-is-256-bits-long!
