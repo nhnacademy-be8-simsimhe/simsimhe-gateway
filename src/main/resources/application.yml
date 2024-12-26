@@ -1,5 +1,6 @@
 server:
   port: 8000
+  shutdown: graceful
 
 eureka:
   client:
@@ -7,7 +8,14 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
+    registry-fetch-interval-seconds: 3
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+      base-path: /management
 
 spring:
   application:
@@ -16,7 +24,16 @@ spring:
     timeout-per-shutdown-phase: 30s
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
       routes:
+        - id: api-server
+          uri: lb://API-SERVER
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - RemoveRequestHeader=Cookie
         - id: auth-server
           uri: lb://AUTH-SERVER
           predicates:
@@ -41,7 +58,7 @@ spring:
         - id: auth-server
           uri: lb://AUTH-SERVER
           predicates:
-            - Path=/api/hello
+            - Path=/api/hell
             - Method=GET
           filters:
             - RemoveRequestHeader=Cookie
@@ -56,6 +73,8 @@ spring:
           uri: lb://API-SERVER
           predicates:
             - Path=/api/shop
+
+
 
 
 jwt:
