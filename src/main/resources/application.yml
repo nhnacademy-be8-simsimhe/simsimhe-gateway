@@ -72,7 +72,7 @@ spring:
         - id: api-server
           uri: lb://API-SERVER
           predicates:
-            - Path=/api/shop
+            - Path=/api/shop/**
 
 
 
