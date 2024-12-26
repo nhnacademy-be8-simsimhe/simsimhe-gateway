@@ -46,12 +46,16 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
-        - id : api-server
+        - id: api-server
           uri: lb://API-SERVER
           predicates:
             - Path=/shop/hello
           filters:
             - RemoveRequestHeader=Cookie
+        - id: api-server
+          uri: lb://API-SERVER
+          predicates:
+            - Path=/api/shop
 
 
 jwt:
