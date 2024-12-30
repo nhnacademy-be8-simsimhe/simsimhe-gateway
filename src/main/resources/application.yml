@@ -37,22 +37,8 @@ spring:
         - id: auth-server
           uri: lb://AUTH-SERVER
           predicates:
-            - Path=/api/users
+            - Path=/auth/**
             - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-        - id: auth-server
-          uri: lb://AUTH-SERVER
-          predicates:
-            - Path=/api/login
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-        - id: auth-server
-          uri: lb://AUTH-SERVER
-          predicates:
-            - Path=/api/users/**
-            - Method=POST,GET
           filters:
             - RemoveRequestHeader=Cookie
         - id: auth-server
