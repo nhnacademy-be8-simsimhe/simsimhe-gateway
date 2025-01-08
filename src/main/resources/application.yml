@@ -28,57 +28,44 @@ spring:
     timeout-per-shutdown-phase: 30s
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
       routes:
-        - id: auth-server
-          uri: lb://AUTH-SERVER
-          predicates:
-            - Path=/api/users
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-        - id: auth-server
-          uri: lb://AUTH-SERVER
-          predicates:
-            - Path=/api/login
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-        - id: auth-server
-          uri: lb://AUTH-SERVER
+        - id: api-server
+          uri: lb://API-SERVER
           predicates:
             - Path=/api/users/**
-            - Method=POST,GET
           filters:
             - RemoveRequestHeader=Cookie
         - id: auth-server
           uri: lb://AUTH-SERVER
           predicates:
-            - Path=/api/hello
+            - Path=/auth/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+        - id: auth-server
+          uri: lb://AUTH-SERVER
+          predicates:
+            - Path=/api/hell
             - Method=GET
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
-        - id : api-server
+        - id: api-server
           uri: lb://API-SERVER
           predicates:
-            - Path=/shop/hello
+            - Path=/api/shop/hello
           filters:
             - RemoveRequestHeader=Cookie
         - id: api-server
           uri: lb://API-SERVER
           predicates:
-            - Path=/shop/**
-          filters:
-            - RewritePath=/shop/(?<segment>.*), /$\{segment}
-            - name: Retry
-              args:
-                retries: 2
-                statuses: INTERNAL_SERVER_ERROR,SERVICE_UNAVAILABLE
-                methods: GET,POST,PUT,PATCH,DELETE
-                backoff:
-                  firstBackoff: 100ms
-                  maxBackoff: 100ms
-                  factor: 2
+            - Path=/api/shop/**,/api/admin/**
+
+
+
 
 jwt:
   secret: super-strong-secret-key-that-is-256-bits-long!
