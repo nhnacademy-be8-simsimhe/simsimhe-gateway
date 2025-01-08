@@ -9,11 +9,13 @@
 name: Java CI with Maven
 
 on:
-  workflow_run:
-    workflows: ["Sonar Qube flow"]
-    types:
-      - completed
-    status: success
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 
 jobs:
