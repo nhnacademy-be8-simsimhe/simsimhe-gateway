@@ -43,6 +43,7 @@ spring:
               /api/admin/**
           filters:
             - RemoveRequestHeader=Cookie
+            - LogFilter
 
 #         api 서버 (인증이 필요한)
         - id: api-server-authorization
@@ -52,6 +53,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
+            - LogFilter
 
 #         auth 서버
         - id: auth-server
@@ -61,6 +63,7 @@ spring:
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
+            - LogFilter
 
 
 
