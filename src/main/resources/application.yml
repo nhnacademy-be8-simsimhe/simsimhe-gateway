@@ -38,7 +38,7 @@ spring:
           predicates:
             - Path=/api/users/localUsers/{loginId},
               /api/users/{userId}/latestLoginDate,
-              /api/users/socialUsers/login,
+              /api/users/socialUser/login,
               /api/shop/**,
               /api/admin/**
           filters:
