@@ -39,6 +39,8 @@ spring:
             - Path=/api/users/localUsers/{loginId},
               /api/users/{userId}/latestLoginDate,
               /api/users/socialUser/login,
+              /api/users/localUsers/{loginId}/exists,
+              /api/users/localUsers,
               /api/shop/**,
               /api/admin/**
           filters:
