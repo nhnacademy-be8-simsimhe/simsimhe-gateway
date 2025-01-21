@@ -32,12 +32,33 @@ spring:
         locator:
           enabled: true
       routes:
+#         api 서버
         - id: api-server
+          uri: lb://API-SERVER
+          predicates:
+            - Path=/api/users/localUsers/{loginId},
+              /api/users/{userId}/latestLoginDate,
+              /api/users/socialUser/login,
+              /api/users/localUsers/{loginId}/exists,
+              /api/users/localUsers,
+              /api/users/{loginId}/status,
+              /api/shop/**,
+              /api/admin/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - LogFilter
+
+#         api 서버 (인증이 필요한)
+        - id: api-server-authorization
           uri: lb://API-SERVER
           predicates:
             - Path=/api/users/**
           filters:
             - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
+            - LogFilter
+
+#         auth 서버
         - id: auth-server
           uri: lb://AUTH-SERVER
           predicates:
@@ -45,25 +66,7 @@ spring:
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
-        - id: auth-server
-          uri: lb://AUTH-SERVER
-          predicates:
-            - Path=/api/hell
-            - Method=GET
-          filters:
-            - RemoveRequestHeader=Cookie
-            - AuthorizationHeaderFilter
-        - id: api-server
-          uri: lb://API-SERVER
-          predicates:
-            - Path=/api/shop/hello
-          filters:
-            - RemoveRequestHeader=Cookie
-        - id: api-server
-          uri: lb://API-SERVER
-          predicates:
-            - Path=/api/shop/**,/api/admin/**
-
+            - LogFilter
 
 
 

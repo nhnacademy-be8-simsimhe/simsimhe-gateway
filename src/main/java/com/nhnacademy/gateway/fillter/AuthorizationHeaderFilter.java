@@ -39,18 +39,18 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
-
             if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                return onError(exchange, "No authorization header");
+                return onError(exchange, "No authorization header: " + request.getURI());
             }
 
             String authorizationHeader = Objects.requireNonNull(request.getHeaders().get(HttpHeaders.AUTHORIZATION)).getFirst();
             String jwt = authorizationHeader.replace("Bearer ", "");
 
             if (!isJwtValid(jwt)) {
-                return onError(exchange, "JWT token is not valid");
+                return onError(exchange, "JWT token is not valid: " + request.getURI());
             }
 
+            log.info("valid authorization header: " + request.getURI());
             return chain.filter(exchange);
         };
     }
