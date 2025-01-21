@@ -41,6 +41,7 @@ spring:
               /api/users/socialUser/login,
               /api/users/localUsers/{loginId}/exists,
               /api/users/localUsers,
+              /api/users/{loginId}/status,
               /api/shop/**,
               /api/admin/**
           filters:
