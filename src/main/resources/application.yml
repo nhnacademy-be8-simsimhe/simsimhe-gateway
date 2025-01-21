@@ -43,8 +43,10 @@ spring:
               /api/users/localUsers,
               /api/users/{loginId}/status,
               /api/shop/**,
-              /api/admin/**
+              /api/admin/**,
+              /api/users/**
           filters:
+#            - Path=/api/users/**
             - RemoveRequestHeader=Cookie
             - LogFilter
 
@@ -52,7 +54,6 @@ spring:
         - id: api-server-authorization
           uri: lb://API-SERVER
           predicates:
-            - Path=/api/users/**
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
