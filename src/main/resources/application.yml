@@ -51,13 +51,13 @@ spring:
             - LogFilter
 
 #         api 서버 (인증이 필요한)
-        - id: api-server-authorization
-          uri: lb://API-SERVER
-          predicates:
-          filters:
-            - RemoveRequestHeader=Cookie
-            - AuthorizationHeaderFilter
-            - LogFilter
+#        - id: api-server-authorization
+#          uri: lb://API-SERVER
+#          predicates:
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - AuthorizationHeaderFilter
+#            - LogFilter
 
 #         auth 서버
         - id: auth-server
